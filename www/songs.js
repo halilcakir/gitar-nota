@@ -20,40 +20,74 @@ const S = str => str.trim().split(/\s+/).map(t => {
 // :2   = İkilik (2 vuruş, uzun)
 // :3   = Noktalı ikilik (3 vuruş)
 const SONGS = [
-  { id: 'walk', t: 'Tel Yürüyüşü (Açık Teller)', cat: 'Başlangıç', sub: 'Açık Tel Etüdü • 1–6. Tel', lv: 0, bpm: 84,
-    notes: S('E2:1 E2:1 A2:1 A2:1 D3:1 D3:1 G3:2 B3:1 B3:1 E4:1 E4:1 B3:.5 G3:.5 D3:.5 A2:.5 E2:2') },
-  { id: 'bulbul', t: '🇹🇷 Bülbülüm Altın Kafeste', cat: 'Türk Ezgisi', sub: 'Rumeli Türküsü • Uşşak Makamı', lv: 1, bpm: 88,
-    notes: S('E4:1 F4:.5 G4:.5 F4:1 E4:1 D4:.5 E4:.5 D4:1 C4:2 B3:1 C4:.5 D4:.5 E4:1 D4:1 C4:.5 D4:.5 C4:1 B3:2 E4:1 D4:.5 C4:.5 D4:1 E4:1 D4:.5 C4:.5 B3:1 D4:1 C4:1 B3:2') },
-  { id: 'ode', t: 'Neşe Ode (Beethoven)', cat: 'Klasik', sub: 'L. v. Beethoven • 9. Senfoni', lv: 1, bpm: 96,
-    notes: S('E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 E4:1.5 D4:.5 D4:2 E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 D4:1.5 C4:.5 C4:2') },
-  { id: 'mary', t: 'Küçük Kuzu', cat: 'Başlangıç', sub: 'Klasik Başlangıç Melodisi • 1–2. Tel', lv: 1, bpm: 96,
-    notes: S('E4:1.5 D4:.5 C4:1 D4:1 E4:1 E4:1 E4:2 D4:1 D4:1 D4:2 E4:1 G4:1 G4:2 E4:1.5 D4:.5 C4:1 D4:1 E4:1 E4:1 E4:1 E4:1 D4:1 D4:1 E4:1 D4:1 C4:2') },
-  { id: 'mid', t: 'Orta Tel Melodisi', cat: 'Etüt', sub: 'Pozisyon Çalışması • 3–4. Tel', lv: 2, bpm: 86,
-    notes: S('G3:1 A3:.5 G3:.5 F3:1 E3:1 D3:.5 E3:.5 F3:1 G3:2 A3:1 G3:.5 F3:.5 E3:1 F3:1 D3:2') },
-  { id: 'bass', t: 'Bas Yürüyüşü', cat: 'Etüt', sub: 'Başparmak (p) Etüdü • 5–6. Tel', lv: 3, bpm: 86,
-    notes: S('A2:1 B2:.5 C3:.5 B2:1 A2:1 G2:.5 F2:.5 E2:2 E2:.5 F2:.5 G2:1 A2:.5 B2:.5 C3:1 B2:1 A2:2') },
-  { id: 'uskudar', t: '🇹🇷 Üsküdar\'a Gider İken (Katibim)', cat: 'Türk Ezgisi', sub: 'Anonim İstanbul Türküsü • Nihavend', lv: 4, bpm: 92,
-    notes: S('A3:.5 B3:.5 C4:1 D4:.5 E4:.5 E4:1 D4:.5 C4:.5 D4:1 B3:.5 C4:.5 A3:2 A3:.5 B3:.5 C4:1 D4:.5 E4:.5 E4:1 D4:.5 C4:.5 B3:1 C4:.5 B3:.5 A3:2') },
-  { id: 'canakkale', t: '🇹🇷 Çanakkale Türküsü', cat: 'Türk Ezgisi', sub: 'Kastamonu Yöresi • Segâh Esintisi', lv: 4, bpm: 78,
-    notes: S('E4:1.5 F4:.5 G4:1 E4:1 F4:1.5 D4:.5 E4:1 C4:1 D4:2 D4:1.5 E4:.5 F4:1 D4:1 E4:1.5 C4:.5 D4:1 B3:1 C4:1 A3:2') },
-  { id: 'sarigelin', t: '🇹🇷 Sarı Gelin', cat: 'Türk Ezgisi', sub: 'Erzurum / Kafkas Türküsü • Kürdî', lv: 4, bpm: 82,
-    notes: S('E4:1.5 D4:.5 C4:1 B3:1 A3:.5 B3:.5 C4:1 D4:2 D4:1.5 C4:.5 B3:1 A3:1 G3:.5 A3:.5 B3:1 A3:2') },
-  { id: 'frere_s', t: 'Kardeş Jacques', cat: 'Dünya', sub: 'Fransız Halk Melodisi • Kanon', lv: 4, bpm: 96,
-    notes: S('C4:1 D4:1 E4:1 C4:1 C4:1 D4:1 E4:1 C4:1 E4:1 F4:1 G4:2 E4:1 F4:1 G4:2 G4:.5 A3:.5 G4:.5 F4:.5 E4:1 C4:1 C4:1 G3:1 C4:2') },
-  { id: 'uzunince', t: '🇹🇷 Uzun İnce Bir Yoldayım', cat: 'Türk Ezgisi', sub: 'Âşık Veysel Şatıroğlu • Hüseyni', lv: 5, bpm: 86,
-    notes: S('E4:.5 E4:.5 E4:1 D4:.5 E4:.5 F4:1 E4:.5 D4:.5 C4:1 D4:.5 E4:.5 C4:1 D4:.5 B3:.5 C4:1 A3:2 D4:.5 D4:.5 D4:1 C4:.5 D4:.5 E4:1 D4:.5 C4:.5 B3:1 C4:.5 D4:.5 B3:1 C4:1 A3:2') },
-  { id: 'twinkle', t: 'Küçük Yıldız', cat: 'Klasik', sub: 'W. A. Mozart • Ah! vous dirai-je', lv: 5, bpm: 94,
-    notes: S('C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2 F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2 G4:1 G4:1 F4:1 F4:1 E4:1 E4:1 D4:2 C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2 F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2') },
-  { id: 'hicaz_ince', t: '🇹🇷 İnce Tellerde Diyez Ezgisi', cat: 'Türk Ezgisi', sub: 'Hicaz Makamı Etüdü • 1–2. Tel', lv: 7, bpm: 86,
-    notes: S('E4:1 F4:.5 Gs4:.5 A4:1 Gs4:.5 F4:.5 E4:1 Ds4:.5 E4:.5 F4:2 E4:1 D4:.5 Cs4:.5 D4:1 E4:.5 F4:.5 E4:1 C4:.5 B3:.5 E4:2') },
-  { id: 'furelise', t: 'Für Elise (Beethoven · Diyezli)', cat: 'Klasik', sub: 'L. v. Beethoven • La Minör (Am)', lv: 10, bpm: 92,
-    notes: S('E4:.5 Ds4:.5 E4:.5 Ds4:.5 E4:.5 B3:.5 D4:.5 C4:.5 A3:1.5 C3:.5 E3:.5 A3:.5 B3:1.5 E3:.5 Gs3:.5 B3:.5 C4:1.5 E3:.5 E4:.5 Ds4:.5 E4:.5 Ds4:.5 E4:.5 B3:.5 D4:.5 C4:.5 A3:2') },
-  { id: 'greensleeves', t: 'Greensleeves (Diyezli)', cat: 'Dünya', sub: '16. Yüzyıl İngiliz Rönesans Ezgisi', lv: 10, bpm: 88,
-    notes: S('A3:1 C4:2 D4:1 E4:1.5 Fs4:.5 E4:1 D4:2 B3:1 G3:1.5 A3:.5 B3:1 C4:2 A3:1 A3:1.5 Gs3:.5 A3:1 B3:2 Gs3:1 E3:2') },
-  { id: 'samanyolu', t: '🇹🇷 Samanyolu (Diyezli)', cat: 'Türk Ezgisi', sub: 'Metin Bükey • Klasik Gitar Düzenlemesi', lv: 10, bpm: 88,
-    notes: S('A4:1 E4:1 E4:2 D4:.5 F4:.5 E4:.5 D4:.5 C4:1 B3:1 A3:2 B3:.5 C4:.5 D4:1 B3:.5 C4:.5 A3:1 Gs3:1 E4:2') },
-  { id: 'romance', t: 'Romance Anonimo (Klasik Gitar)', cat: 'Klasik', sub: 'İspanyol Klasik Başyapıtı • Mi Minör', lv: 11, bpm: 84,
-    notes: S('B4:1 B4:1 B4:1 B4:1 A4:1 G4:1 G4:1 Fs4:1 E4:2 E4:1 G4:1 B4:1 E5:1 D5:1 C5:1 C5:1 B4:1 A4:2') },
+  {
+    id: 'walk', t: 'Tel Yürüyüşü (Açık Teller)', cat: 'Başlangıç', sub: 'Açık Tel Etüdü • 1–6. Tel', lv: 0, bpm: 84,
+    notes: S('E2:1 E2:1 A2:1 A2:1 D3:1 D3:1 G3:2 B3:1 B3:1 E4:1 E4:1 B3:.5 G3:.5 D3:.5 A2:.5 E2:2')
+  },
+  {
+    id: 'bulbul', t: '🇹🇷 Bülbülüm Altın Kafeste', cat: 'Türk Ezgisi', sub: 'Rumeli Türküsü • Uşşak Makamı', lv: 1, bpm: 88,
+    notes: S('E4:1 F4:.5 G4:.5 F4:1 E4:1 D4:.5 E4:.5 D4:1 C4:2 B3:1 C4:.5 D4:.5 E4:1 D4:1 C4:.5 D4:.5 C4:1 B3:2 E4:1 D4:.5 C4:.5 D4:1 E4:1 D4:.5 C4:.5 B3:1 D4:1 C4:1 B3:2')
+  },
+  {
+    id: 'ode', t: 'Neşe Ode (Beethoven)', cat: 'Klasik', sub: 'L. v. Beethoven • 9. Senfoni', lv: 1, bpm: 96,
+    notes: S('E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 E4:1.5 D4:.5 D4:2 E4:1 E4:1 F4:1 G4:1 G4:1 F4:1 E4:1 D4:1 C4:1 C4:1 D4:1 E4:1 D4:1.5 C4:.5 C4:2')
+  },
+  {
+    id: 'mary', t: 'Küçük Kuzu', cat: 'Başlangıç', sub: 'Klasik Başlangıç Melodisi • 1–2. Tel', lv: 1, bpm: 96,
+    notes: S('E4:1.5 D4:.5 C4:1 D4:1 E4:1 E4:1 E4:2 D4:1 D4:1 D4:2 E4:1 G4:1 G4:2 E4:1.5 D4:.5 C4:1 D4:1 E4:1 E4:1 E4:1 E4:1 D4:1 D4:1 E4:1 D4:1 C4:2')
+  },
+  {
+    id: 'mid', t: 'Orta Tel Melodisi', cat: 'Etüt', sub: 'Pozisyon Çalışması • 3–4. Tel', lv: 2, bpm: 86,
+    notes: S('G3:1 A3:.5 G3:.5 F3:1 E3:1 D3:.5 E3:.5 F3:1 G3:2 A3:1 G3:.5 F3:.5 E3:1 F3:1 D3:2')
+  },
+  {
+    id: 'bass', t: 'Bas Yürüyüşü', cat: 'Etüt', sub: 'Başparmak (p) Etüdü • 5–6. Tel', lv: 3, bpm: 86,
+    notes: S('A2:1 B2:.5 C3:.5 B2:1 A2:1 G2:.5 F2:.5 E2:2 E2:.5 F2:.5 G2:1 A2:.5 B2:.5 C3:1 B2:1 A2:2')
+  },
+  {
+    id: 'uskudar', t: '🇹🇷 Üsküdar\'a Gider İken (Katibim)', cat: 'Türk Ezgisi', sub: 'Anonim İstanbul Türküsü • Nihavend', lv: 4, bpm: 92,
+    notes: S('A3:.5 B3:.5 C4:1 D4:.5 E4:.5 E4:1 D4:.5 C4:.5 D4:1 B3:.5 C4:.5 A3:2 A3:.5 B3:.5 C4:1 D4:.5 E4:.5 E4:1 D4:.5 C4:.5 B3:1 C4:.5 B3:.5 A3:2')
+  },
+  {
+    id: 'canakkale', t: '🇹🇷 Çanakkale Türküsü', cat: 'Türk Ezgisi', sub: 'Kastamonu Yöresi • Segâh Esintisi', lv: 4, bpm: 78,
+    notes: S('E4:1.5 F4:.5 G4:1 E4:1 F4:1.5 D4:.5 E4:1 C4:1 D4:2 D4:1.5 E4:.5 F4:1 D4:1 E4:1.5 C4:.5 D4:1 B3:1 C4:1 A3:2')
+  },
+  {
+    id: 'sarigelin', t: '🇹🇷 Sarı Gelin', cat: 'Türk Ezgisi', sub: 'Erzurum / Kafkas Türküsü • Kürdî', lv: 4, bpm: 82,
+    notes: S('E4:1.5 D4:.5 C4:1 B3:1 A3:.5 B3:.5 C4:1 D4:2 D4:1.5 C4:.5 B3:1 A3:1 G3:.5 A3:.5 B3:1 A3:2')
+  },
+  {
+    id: 'frere_s', t: 'Kardeş Jacques', cat: 'Dünya', sub: 'Fransız Halk Melodisi • Kanon', lv: 4, bpm: 96,
+    notes: S('C4:1 D4:1 E4:1 C4:1 C4:1 D4:1 E4:1 C4:1 E4:1 F4:1 G4:2 E4:1 F4:1 G4:2 G4:.5 A3:.5 G4:.5 F4:.5 E4:1 C4:1 C4:1 G3:1 C4:2')
+  },
+  {
+    id: 'uzunince', t: '🇹🇷 Uzun İnce Bir Yoldayım', cat: 'Türk Ezgisi', sub: 'Âşık Veysel Şatıroğlu • Hüseyni', lv: 5, bpm: 86,
+    notes: S('E4:.5 E4:.5 E4:1 D4:.5 E4:.5 F4:1 E4:.5 D4:.5 C4:1 D4:.5 E4:.5 C4:1 D4:.5 B3:.5 C4:1 A3:2 D4:.5 D4:.5 D4:1 C4:.5 D4:.5 E4:1 D4:.5 C4:.5 B3:1 C4:.5 D4:.5 B3:1 C4:1 A3:2')
+  },
+  {
+    id: 'twinkle', t: 'Küçük Yıldız', cat: 'Klasik', sub: 'W. A. Mozart • Ah! vous dirai-je', lv: 5, bpm: 94,
+    notes: S('C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2 F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2 G4:1 G4:1 F4:1 F4:1 E4:1 E4:1 D4:2 C4:1 C4:1 G4:1 G4:1 A4:1 A4:1 G4:2 F4:1 F4:1 E4:1 E4:1 D4:1 D4:1 C4:2')
+  },
+  {
+    id: 'hicaz_ince', t: '🇹🇷 İnce Tellerde Diyez Ezgisi', cat: 'Türk Ezgisi', sub: 'Hicaz Makamı Etüdü • 1–2. Tel', lv: 7, bpm: 86,
+    notes: S('E4:1 F4:.5 Gs4:.5 A4:1 Gs4:.5 F4:.5 E4:1 Ds4:.5 E4:.5 F4:2 E4:1 D4:.5 Cs4:.5 D4:1 E4:.5 F4:.5 E4:1 C4:.5 B3:.5 E4:2')
+  },
+  {
+    id: 'furelise', t: 'Für Elise (Beethoven · Diyezli)', cat: 'Klasik', sub: 'L. v. Beethoven • La Minör (Am)', lv: 10, bpm: 92,
+    notes: S('E4:.5 Ds4:.5 E4:.5 Ds4:.5 E4:.5 B3:.5 D4:.5 C4:.5 A3:1.5 C3:.5 E3:.5 A3:.5 B3:1.5 E3:.5 Gs3:.5 B3:.5 C4:1.5 E3:.5 E4:.5 Ds4:.5 E4:.5 Ds4:.5 E4:.5 B3:.5 D4:.5 C4:.5 A3:2')
+  },
+  {
+    id: 'greensleeves', t: 'Greensleeves (Diyezli)', cat: 'Dünya', sub: '16. Yüzyıl İngiliz Rönesans Ezgisi', lv: 10, bpm: 88,
+    notes: S('A3:1 C4:2 D4:1 E4:1.5 Fs4:.5 E4:1 D4:2 B3:1 G3:1.5 A3:.5 B3:1 C4:2 A3:1 A3:1.5 Gs3:.5 A3:1 B3:2 Gs3:1 E3:2')
+  },
+  {
+    id: 'samanyolu', t: '🇹🇷 Samanyolu (Diyezli)', cat: 'Türk Ezgisi', sub: 'Metin Bükey • Klasik Gitar Düzenlemesi', lv: 10, bpm: 88,
+    notes: S('A4:1 E4:1 E4:2 D4:.5 F4:.5 E4:.5 D4:.5 C4:1 B3:1 A3:2 B3:.5 C4:.5 D4:1 B3:.5 C4:.5 A3:1 Gs3:1 E4:2')
+  },
+  {
+    id: 'romance', t: 'Romance Anonimo (Klasik Gitar)', cat: 'Klasik', sub: 'İspanyol Klasik Başyapıtı • Mi Minör', lv: 11, bpm: 84,
+    notes: S('B4:1 B4:1 B4:1 B4:1 A4:1 G4:1 G4:1 Fs4:1 E4:2 E4:1 G4:1 B4:1 E5:1 D5:1 C5:1 C5:1 B4:1 A4:2')
+  },
 ];
 
 const MODES = [['listen', '🎧', 'Dinle'], ['together', '🤝', 'Birlikte'], ['turns', '🔁', 'Sırayla'], ['solo', '🎸', 'Tek başıma']];
@@ -66,8 +100,13 @@ const MODE_HELP = {
 const SEG = { one: 1, phrase: 4, full: 9999 };
 
 const getStars = () => JSON.parse(localStorage.getItem('gn_stars') || '{}');
-let sm = Object.assign({ mode: 'together', seg: 'phrase', input: 'touch', bpm: 84, metro: false, showStaff: true, sheetOnly: false, sheetNames: true, sheetSf: true, sheetBig: true },
+let sm = Object.assign({ mode: 'together', seg: 'phrase', input: 'mic', bpm: 84, metro: false, showStaff: true, sheetOnly: false, sheetNames: true, sheetSf: true, sheetBig: true },
   JSON.parse(localStorage.getItem('gn_song') || '{}'));
+// Şarkı ekranında gitarla çalmanın hemen çalışması için varsayılan girdiyi mikrofon olarak başlat
+if (!sessionStorage.getItem('gn_song_in_init')) {
+  sm.input = 'mic';
+  sessionStorage.setItem('gn_song_in_init', '1');
+}
 const saveSm = () => localStorage.setItem('gn_song', JSON.stringify(sm));
 let song = null, run = null, micMuteUntil = 0, inSong = false;
 
@@ -137,28 +176,52 @@ function runTimed(o) {
 
 // ---------- Mikrofon (şarkı modu): frekans değişimi + onset ile yankı filtreli ----------
 async function startSongMic() {
-  if (micStream) { resetPitchTracker(false); return true; }
-  if (!(await startMic())) return false;
+  if (micStream && micStream.active) {
+    if (actx && actx.state === 'suspended') {
+      try { await actx.resume(); } catch (_) {}
+    }
+    resetPitchTracker(false);
+    clearInterval(micTimer);
+    micTimer = setInterval(songMicTick, 55);
+    return true;
+  }
+  const ok = await startMic(typeof selectedMicId !== 'undefined' ? selectedMicId : '');
+  if (!ok) return false;
   resetPitchTracker(false);
-  micTimer = setInterval(songMicTick, 60);
+  clearInterval(micTimer);
+  micTimer = setInterval(songMicTick, 55);
   return true;
 }
 
 function songMicTick() {
   if (!analyser || !actx) return;
+  if (actx.state === 'suspended') {
+    actx.resume().catch(() => {});
+  }
   if (actx.currentTime < micMuteUntil) {
-    detectPitch();
+    detectPitch(true);
     resetPitchTracker(false);
     return;
   }
   const ev = pollNoteEvent();
+  const vu = $('spVuFill');
+  if (vu) {
+    const rmsVal = typeof lastRms !== 'undefined' ? lastRms : 0;
+    const pct = Math.min(100, Math.round(Math.sqrt(rmsVal * 18) * 100));
+    vu.style.width = pct + '%';
+  }
+  const badge = $('spMicBadge');
+  if (badge) {
+    badge.className = 'spMicBadge on';
+    badge.textContent = '🎤 MİKROFON AKTİF';
+  }
   const ms = $('spMic');
   if (!ev) {
-    if (ms) ms.textContent = '🎤 Dinliyorum…';
+    if (ms) ms.textContent = '🎸 Gitarını çal — mikrofon dinliyor…';
     return;
   }
   if (ev.sustain) {
-    if (ms) ms.textContent = `🎤 Önceki tel uzuyor (${nameOf(ev.pc)}) — yeni notayı çal`;
+    if (ms) ms.textContent = `🎤 Uzayan tel: ${nameOf(ev.pc)} — sıradaki notayı çal`;
     return;
   }
   if (ms) ms.textContent = `🎤 Duyulan: ${nameBoth(ev.pc)} (${ev.freq.toFixed(0)} Hz)`;
@@ -169,7 +232,13 @@ function songMicTick() {
 
 // ---------- Mod girişi / çıkışı ----------
 function startSongMode() { inSong = true; song = null; onPosClick = boardTap; renderSong(); }
-function stopSong() { inSong = false; stopRun(true); Metro.stop(); song = null; }
+function stopSong() {
+  inSong = false;
+  stopRun(true);
+  Metro.stop();
+  song = null;
+  if ($('studyCard')) $('studyCard').style.display = '';
+}
 function stopRun(noRender) {
   if (run) { if (run.timed) run.timed.stop(); clearInterval(run.watch); }
   run = null; stopMic();
@@ -204,6 +273,7 @@ let songCatFilter = 'all';
 function renderSong() {
   const ui = $('songUI'), bot = $('songBottom'); ui.innerHTML = ''; bot.innerHTML = '';
   if (!song) {
+    if ($('studyCard')) $('studyCard').style.display = '';
     $('boardWrap').style.display = 'none';
     if ($('promptBox')) $('promptBox').style.display = 'none';
     setFb('');
@@ -252,17 +322,19 @@ function renderSong() {
       song = target;
       if (song.bpm) { sm.bpm = song.bpm; saveSm(); }
       if (act === 'sheet') {
-        sm.sheetOnly = true; sm.showStaff = true;
+        sm.sheetOnly = true; sm.showStaff = true; sm.input = 'mic';
         if (sm.mode === 'listen') sm.mode = 'together';
         saveSm();
       } else if (act === 'listen') {
         sm.mode = 'listen'; saveSm();
-      } else if (act === 'play' && sm.mode === 'listen') {
-        sm.mode = 'together'; saveSm();
+      } else {
+        sm.input = 'mic';
+        if (sm.mode === 'listen') sm.mode = 'together';
+        saveSm();
       }
       renderSong();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (act === 'listen') setTimeout(() => startRun(), 150);
+      setTimeout(() => { if (!run && song) startRun(); }, 100);
     };
     ui.querySelectorAll('.scBtn').forEach(b => b.onclick = e => {
       e.stopPropagation();
@@ -274,13 +346,14 @@ function renderSong() {
     bindMetro(); if (sm.metro) Metro.start();
     return;
   }
+  if ($('studyCard')) $('studyCard').style.display = 'none';
   if ($('promptBox')) $('promptBox').style.display = '';
   $('boardWrap').style.display = sm.sheetOnly ? 'none' : '';
   FRETS = Math.min(12, Math.max(3, ...song.notes.map(n => n.f)) + 1); drawBoard(); onPosClick = boardTap;
   $('prompt').textContent = `🎵 ${song.t}`;
   setFb(sm.sheetOnly
-    ? '📖 Sadece Notadan Çal modu aktif — Büyük portedeki notalara bakarak gitarınla çal veya notaların üzerine dokun.'
-    : 'Aşağıdan "▶ Şarkıyı Başlat" butonuna dokunarak dinleyebilir veya çalabilirsin.', 'ok');
+    ? '📖 Sadece Notadan Çal modu aktif — Portedeki notalara bakarak gitarınla çal veya notaların üzerine dokun.'
+    : '🎸 Gitarınla sıradaki notayı çal veya klavye/porte üzerindeki notaya dokun.', 'ok');
   $('levelDesc').textContent = song.sub || '';
   const minS = Math.min(...song.notes.map(n => n.s)) + 1, maxS = Math.max(...song.notes.map(n => n.s)) + 1;
   const chips = song.notes.map((n, i) => {
@@ -300,56 +373,87 @@ function renderSong() {
       ${sm.mode === 'together' || sm.mode === 'turns' ? '<button id="spHear">🔊 Sesi Duy</button>' : ''}
     </div>
     <div id="spModes">${MODES.map(m => `<button data-m="${m[0]}" class="${sm.mode === m[0] ? 'sel' : ''}">${m[1]} <span>${m[2]}</span></button>`).join('')}</div>
-    <div class="help" id="spHelp">${MODE_HELP[sm.mode]}</div>
     <div class="spOpts">
       ${sm.mode === 'turns' ? `<label>Parça <select id="spSeg"><option value="one">Tek nota</option><option value="phrase">Cümle (4 nota)</option><option value="full">Tam şarkı</option></select></label>` : ''}
       ${sm.mode !== 'listen' ? `<label>Girdi <select id="spIn"><option value="mic">🎤 Gitar (mikrofon)</option><option value="touch">✋ Dokunarak</option></select></label>` : ''}
       ${sm.mode !== 'listen' && sm.input === 'mic' ? `<label>Yankı Filtresi <select id="spSens"><option value="sens">Hassas</option><option value="normal">Normal</option><option value="strict">Yüksek</option></select></label>` : ''}
+      <span class="spMetaInline">Seviye ${song.lv + 1} · 4/4 · ${minS}-${maxS}.Tel</span>
     </div>
-    ${metroHTML()}
-    <div class="spStatsRow">
-      <div class="spStatBox"><small>ZORLUK</small><b>Seviye ${song.lv + 1}</b></div>
-      <div class="spStatBox"><small>TEMPO</small><b class="emerald">${sm.bpm} BPM</b></div>
-      <div class="spStatBox"><small>ÖLÇÜ &amp; TEL</small><b>4/4 · ${minS}-${maxS}.Tel</b></div>
-    </div>
+    ${sm.mode !== 'listen' && sm.input === 'mic' ? `
+    <div id="spMicLiveBar" class="spMicLiveBar">
+      <span id="spMicBadge" class="spMicBadge ${micStream && micStream.active ? 'on' : ''}">${micStream && micStream.active ? '🎤 MİKROFON AKTİF' : '🎤 Mikrofon Hazırlanıyor'}</span>
+      <div class="spVuBox" title="Mikrofon Ses Seviyesi">
+        <span>SES</span>
+        <div class="tVuTrack"><div id="spVuFill" class="tVuFill"></div></div>
+      </div>
+      <div id="spMic">${micStream && micStream.active ? '🎸 Gitarını çal — mikrofon dinliyor…' : '🎤 Mikrofon açılıyor…'}</div>
+      <button id="spMicRestart" class="pill">🔄 Mikrofonu Yenile</button>
+    </div>` : `<div id="spMic"></div>`}
     <div id="songStaffWrap" class="${sm.sheetOnly ? 'sheetStandActive' : ''}" ${(sm.showStaff || sm.sheetOnly) ? '' : 'hidden'}>
-      ${sm.sheetOnly ? `
       <div class="sheetStandToolbar">
-        <span class="sstTitle">🎼 Tam Boy Nota Sehpası (${song.notes.length} Nota)</span>
+        <span class="sstTitle">🎼 ${sm.sheetOnly ? 'Tam Boy Nota Sehpası' : 'Akıllı Kayar Porte'} (${song.notes.length} Nota · Adım Adım Takip)</span>
         <div class="sstActions">
           <button id="spShNames" class="pill ${sm.sheetNames ? 'on' : ''}">🔤 Nota Adı: ${sm.sheetNames ? 'Açık' : 'Kapalı'}</button>
           <button id="spShSf" class="pill ${sm.sheetSf ? 'on' : ''}">🎸 Tel/Perde: ${sm.sheetSf ? 'Açık' : 'Kapalı'}</button>
-          <button id="spShBig" class="pill ${sm.sheetBig ? 'on' : ''}">🔍 ${sm.sheetBig ? 'Dev (4 Nota/Satır)' : 'Geniş (6 Nota/Satır)'}</button>
+          <button id="spShBig" class="pill ${sm.sheetBig ? 'on' : ''}">🔍 ${sm.sheetBig ? '4 Nota/Satır (Dörtlük)' : '6 Nota/Satır'}</button>
         </div>
-      </div>` : ''}
-      <svg id="songStaff" viewBox="0 0 316 168"></svg>
+      </div>
+      <div id="songStaffScroll" class="staffScrollBox">
+        <svg id="songStaff" viewBox="0 0 460 280"></svg>
+      </div>
       <div class="durLegend"><span>♪ ½v: Kısa (Sekizlik)</span><span>♩ 1v: Normal (Dörtlük)</span><span>♩. 1½v: Noktalı</span><span>𝅗𝅥 2v: Uzun (İkilik)</span></div>
     </div>
-    <div id="strip" ${sm.sheetOnly ? 'hidden' : ''}>${chips}</div>
-    <div id="spMic"></div>`;
+    ${metroHTML()}
+    <div id="strip" ${sm.sheetOnly ? 'hidden' : ''}>${chips}</div>`;
   bot.innerHTML = '<div class="spacer"></div>';
   $('spBack').onclick = () => { stopRun(true); song = null; renderSong(); };
   $('spSheetOnlyBtn').onclick = () => {
+    const wasRunning = !!run;
     sm.sheetOnly = !sm.sheetOnly;
     if (sm.sheetOnly) sm.showStaff = true;
     saveSm();
     renderSong();
+    if (wasRunning && !run) startRun();
   };
   if ($('spStaffBtn')) {
     $('spStaffBtn').onclick = () => { sm.showStaff = !sm.showStaff; saveSm(); $('songStaffWrap').hidden = !sm.showStaff; render(); };
   }
   if ($('spShNames')) {
-    $('spShNames').onclick = () => { sm.sheetNames = !sm.sheetNames; saveSm(); renderSong(); };
+    $('spShNames').onclick = () => { sm.sheetNames = !sm.sheetNames; saveSm(); render(); };
   }
   if ($('spShSf')) {
-    $('spShSf').onclick = () => { sm.sheetSf = !sm.sheetSf; saveSm(); renderSong(); };
+    $('spShSf').onclick = () => { sm.sheetSf = !sm.sheetSf; saveSm(); render(); };
   }
   if ($('spShBig')) {
-    $('spShBig').onclick = () => { sm.sheetBig = !sm.sheetBig; saveSm(); renderSong(); };
+    $('spShBig').onclick = () => { sm.sheetBig = !sm.sheetBig; saveSm(); renderSong(); if (!run) startRun(); };
   }
-  $('spModes').querySelectorAll('button').forEach(b => b.onclick = () => { stopRun(true); sm.mode = b.dataset.m; saveSm(); renderSong(); });
+  if ($('spMicRestart')) {
+    $('spMicRestart').onclick = async () => {
+      stopMic();
+      const ok = await startSongMic();
+      if (ok && !run) begin();
+    };
+  }
+  $('spModes').querySelectorAll('button').forEach(b => b.onclick = () => {
+    stopRun(true);
+    sm.mode = b.dataset.m;
+    saveSm();
+    renderSong();
+    setTimeout(() => startRun(), 80);
+  });
   if ($('spSeg')) { $('spSeg').value = sm.seg; $('spSeg').onchange = e => { sm.seg = e.target.value; saveSm(); }; }
-  if ($('spIn')) { $('spIn').value = sm.input; $('spIn').onchange = e => { sm.input = e.target.value; saveSm(); renderSong(); }; }
+  if ($('spIn')) {
+    $('spIn').value = sm.input;
+    $('spIn').onchange = async e => {
+      sm.input = e.target.value;
+      saveSm();
+      renderSong();
+      if (sm.input === 'mic') {
+        await startSongMic();
+        if (!run) begin();
+      }
+    };
+  }
   if ($('spSens')) { $('spSens').value = micSens; $('spSens').onchange = e => { micSens = e.target.value; localStorage.setItem('gn_mic_sens', micSens); }; }
   $('spStart').onclick = startRun;
   if ($('spHear')) $('spHear').onclick = hearAgain;
@@ -375,43 +479,22 @@ function render() {
   const cc = document.querySelector('#strip .chip.cur');
   if (cc && strip) strip.scrollTop = cc.offsetTop - strip.clientHeight / 2;
 
-  // Şarkı portesini güncelle (Sadece Notadan Çal modunda tüm şarkıyı çok satırlı büyük sehpa olarak, normal modda 5'li pencere olarak çiz)
+  // Şarkı portesini güncelle (Her iki modda da 4'lü ölçüler halinde en az iki dörtlük görünür ve aktif ölçüye adım adım kayar)
   if ((sm.showStaff || sm.sheetOnly) && $('songStaff')) {
-    if (sm.sheetOnly) {
-      const fullList = song.notes.map((n, gi) => ({
-        s: n.s, f: n.f, b: n.b,
-        state: run && run.hit[gi] ? 'hit' : run && run.miss[gi] ? 'miss' : gi === activeIdx ? 'cur' : '',
-        showName: sm.sheetNames || (run && run.hit[gi]),
-      }));
-      drawStaffNotes(fullList, $('songStaff'), {
-        large: true,
-        multiLine: true,
-        notesPerRow: sm.sheetBig ? 4 : 6,
-        showStringFret: sm.sheetSf,
-        onNoteClick: (idx, item) => {
-          boardTap(item.s, item.f);
-        }
-      });
-    } else {
-      const center = Math.max(0, activeIdx);
-      const start = Math.floor(center / 5) * 5;
-      const slice = song.notes.slice(start, start + 5).map((n, k) => {
-        const gi = start + k;
-        return {
-          s: n.s, f: n.f, b: n.b,
-          state: run && run.hit[gi] ? 'hit' : run && run.miss[gi] ? 'miss' : gi === activeIdx ? 'cur' : '',
-          showName: true,
-        };
-      });
-      drawStaffNotes(slice, $('songStaff'), {
-        large: false,
-        multiLine: false,
-        showStringFret: true,
-        onNoteClick: (idx, item) => {
-          boardTap(item.s, item.f);
-        }
-      });
-    }
+    const fullList = song.notes.map((n, gi) => ({
+      s: n.s, f: n.f, b: n.b,
+      state: run && run.hit[gi] ? 'hit' : run && run.miss[gi] ? 'miss' : gi === activeIdx ? 'cur' : '',
+      showName: sm.sheetNames || (run && run.hit[gi]),
+    }));
+    drawStaffNotes(fullList, $('songStaff'), {
+      large: true,
+      multiLine: true,
+      notesPerRow: sm.sheetBig ? 4 : 6,
+      showStringFret: sm.sheetSf,
+      onNoteClick: (idx, item) => {
+        boardTap(item.s, item.f);
+      }
+    });
   }
 
   if (!run || sm.sheetOnly) return;
@@ -531,6 +614,10 @@ function stepJudge(kind, val, s, f) {
   const N = song.notes.length, n = song.notes[run.idx];
   if (noteMatches(n, kind, val)) {
     run.hit[run.idx] = true; record(n.s, n.f, true); run.idx++; run.hintIdx = -1;
+    if (kind === 'mic') {
+      micMuteUntil = (actx ? actx.currentTime : 0) + 0.14;
+      resetPitchTracker(false);
+    }
     if (run.type === 'together') {
       if (run.idx >= N) return finish(N / (N + run.errors), `${run.errors} hata`);
       const nx = song.notes[run.idx];

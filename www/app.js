@@ -814,22 +814,22 @@ function drawStaffNotes(notesList, targetSvg, opts) {
   const svg = targetSvg || $('staff'); if (!svg) return;
   svg.innerHTML = '';
   const cfg = Object.assign({
-    multiLine: false,
-    notesPerRow: window.innerWidth >= 720 ? 6 : 4,
+    multiLine: true,
+    notesPerRow: 4,
     showStringFret: true,
     large: false,
     onNoteClick: null,
   }, opts || {});
 
   const totalCount = notesList.length || 1;
-  const perRow = cfg.multiLine ? Math.max(1, cfg.notesPerRow) : totalCount;
+  const perRow = (cfg.multiLine || totalCount > 4) ? Math.max(1, cfg.notesPerRow || 4) : totalCount;
   const numRows = Math.max(1, Math.ceil(totalCount / perRow));
-  const isWide = window.innerWidth >= 700 && (cfg.large || cfg.multiLine || totalCount > 5);
-  const W = isWide ? 460 : 316;
-  const rowH = 162;
+  const isWide = window.innerWidth >= 700;
+  const W = isWide ? 520 : 320;
+  const rowH = isWide ? 124 : 136;
   const totalH = numRows * rowH + 6;
   svg.setAttribute('viewBox', `0 0 ${W} ${totalH}`);
-  svg.classList.toggle('largeSheetSvg', !!(cfg.large || cfg.multiLine));
+  svg.classList.toggle('largeSheetSvg', !!(cfg.large || numRows > 1));
 
   const mk = (tag, a, parent) => {
     const e = document.createElementNS(NS, tag);
@@ -838,40 +838,51 @@ function drawStaffNotes(notesList, targetSvg, opts) {
     return e;
   };
 
+  let activeRow = 0;
+  notesList.forEach((it, idx) => {
+    if (it.state === 'cur') activeRow = Math.floor(idx / perRow);
+  });
+
   for (let r = 0; r < numRows; r++) {
     const rowNotes = notesList.slice(r * perRow, (r + 1) * perRow);
     const yOff = r * rowH;
-    const yBottom = yOff + 102;
-    const lineGap = 13.5, half = 6.75;
+    const yBottom = yOff + (isWide ? 78 : 86);
+    const lineGap = isWide ? 12 : 12.5, half = lineGap / 2;
     const xLeft = 12, xRight = W - 12;
+    const isCurRow = r === activeRow && numRows > 1;
 
-    // Satır arka planı (çok satırlı konser sehpasında hafif kart ayrımı)
+    // Satır arka planı (aktif satır belirgin kehribar çerçeveli, bir sonraki satır hemen altında net görünür)
     if (numRows > 1) {
-      mk('rect', { x: 4, y: yOff + 4, width: W - 8, height: rowH - 6, rx: 10, fill: r % 2 === 0 ? 'rgba(255,255,255,0.015)' : 'rgba(0,0,0,0.18)', stroke: '#22242a', 'stroke-width': 1 });
-      const mNum = mk('text', { x: xLeft + 2, y: yOff + 19, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 9.5, 'font-weight': '800', fill: '#7a7267' });
-      mNum.textContent = `${r + 1}. SATIR`;
+      mk('rect', {
+        x: 4, y: yOff + 3, width: W - 8, height: rowH - 5, rx: 10,
+        fill: isCurRow ? 'rgba(255, 198, 101, 0.045)' : (r % 2 === 0 ? 'rgba(255,255,255,0.015)' : 'rgba(0,0,0,0.2)'),
+        stroke: isCurRow ? 'rgba(255, 198, 101, 0.45)' : '#25272e',
+        'stroke-width': isCurRow ? 1.5 : 1
+      });
+      const mNum = mk('text', { x: xLeft + 2, y: yOff + 16, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 9.2, 'font-weight': '800', fill: isCurRow ? '#ffc665' : '#857d72' });
+      mNum.textContent = `${r + 1}. ÖLÇÜ (${r * perRow + 1}–${Math.min(totalCount, (r + 1) * perRow)}. Nota)`;
     }
 
-    // 5 Dizek çizgisi (Yüksek kontrastlı, net porte çizgileri)
+    // 5 Dizek çizgisi
     for (let i = 0; i < 5; i++) {
       const ly = yBottom - i * lineGap;
-      mk('line', { x1: xLeft, x2: xRight, y1: ly, y2: ly, stroke: '#495264', 'stroke-width': 1.7 });
+      mk('line', { x1: xLeft, x2: xRight, y1: ly, y2: ly, stroke: '#4d5669', 'stroke-width': 1.6 });
     }
     // Sol ve sağ ölçü çizgileri
-    mk('line', { x1: xLeft, x2: xLeft, y1: yBottom - 4 * lineGap, y2: yBottom, stroke: '#b8a892', 'stroke-width': 2.5 });
-    mk('line', { x1: xRight, x2: xRight, y1: yBottom - 4 * lineGap, y2: yBottom, stroke: '#b8a892', 'stroke-width': 2.5 });
+    mk('line', { x1: xLeft, x2: xLeft, y1: yBottom - 4 * lineGap, y2: yBottom, stroke: '#b8a892', 'stroke-width': 2.4 });
+    mk('line', { x1: xRight, x2: xRight, y1: yBottom - 4 * lineGap, y2: yBottom, stroke: '#b8a892', 'stroke-width': 2.4 });
     if (r === numRows - 1) {
       mk('line', { x1: xRight - 4.5, x2: xRight - 4.5, y1: yBottom - 4 * lineGap, y2: yBottom, stroke: '#b8a892', 'stroke-width': 1.3 });
     }
 
     // Büyük Sol Anahtarı (𝄞)
-    const clef = mk('text', { x: xLeft + 5, y: yBottom - 11, 'font-size': 52, fill: '#ffc665', 'font-family': 'serif' });
+    const clef = mk('text', { x: xLeft + 5, y: yBottom - 10, 'font-size': isWide ? 47 : 49, fill: '#ffc665', 'font-family': 'serif' });
     clef.textContent = '𝄞';
 
     const count = rowNotes.length;
-    const startX = count === 1 ? (W * 0.54) : 72;
-    const usableW = (xRight - 28) - startX;
-    const stepX = count <= 1 ? 0 : (usableW / Math.max(1, (cfg.multiLine ? Math.max(count - 1, perRow - 1) : count - 1)));
+    const startX = count === 1 ? (W * 0.54) : (isWide ? 82 : 70);
+    const usableW = (xRight - (isWide ? 42 : 28)) - startX;
+    const stepX = count <= 1 ? 0 : (usableW / Math.max(1, (numRows > 1 ? Math.max(count - 1, perRow - 1) : count - 1)));
 
     rowNotes.forEach((item, idx) => {
       const globalIdx = r * perRow + idx;
@@ -888,80 +899,80 @@ function drawStaffNotes(notesList, targetSvg, opts) {
       const isDotted = Math.abs(b - 1.5) < 0.12 || Math.abs(b - 3) < 0.12 || Math.abs(b - 0.75) < 0.1;
       const flags = b <= 0.3 ? 2 : b <= 0.6 ? 1 : 0;
 
-      const gNote = mk('g', { class: `stNoteHit ${item.state || ''}`, 'data-idx': globalIdx, style: 'cursor:pointer' });
+      const gNote = mk('g', { class: `stNoteHit ${item.state || ''}`, 'data-idx': globalIdx, 'data-row': r, style: 'cursor:pointer' });
 
       if (item.state === 'cur') {
-        mk('rect', { x: cx - 22, y: yOff + 8, width: 44, height: rowH - 14, rx: 9, fill: 'rgba(255, 198, 101, 0.16)', stroke: 'rgba(255, 198, 101, 0.45)', 'stroke-width': 1.2 }, gNote);
-        mk('circle', { cx, cy: y, r: 15.5, fill: 'rgba(255, 198, 101, 0.22)' }, gNote);
+        mk('rect', { x: cx - 22, y: yOff + 6, width: 44, height: rowH - 10, rx: 9, fill: 'rgba(255, 198, 101, 0.17)', stroke: 'rgba(255, 198, 101, 0.55)', 'stroke-width': 1.4 }, gNote);
+        mk('circle', { cx, cy: y, r: 14, fill: 'rgba(255, 198, 101, 0.24)' }, gNote);
       }
 
       // Ek çizgiler (Ledger lines)
       if (y > yBottom) {
         for (let ly = yBottom + lineGap; ly <= y + 0.5; ly += lineGap) {
-          mk('line', { x1: cx - 14, x2: cx + 14, y1: ly, y2: ly, stroke: '#7b8494', 'stroke-width': 1.8 }, gNote);
+          mk('line', { x1: cx - 13, x2: cx + 13, y1: ly, y2: ly, stroke: '#7b8494', 'stroke-width': 1.7 }, gNote);
         }
       }
       if (y < yBottom - 4 * lineGap) {
         for (let ly = yBottom - 5 * lineGap; ly >= y - 0.5; ly -= lineGap) {
-          mk('line', { x1: cx - 14, x2: cx + 14, y1: ly, y2: ly, stroke: '#7b8494', 'stroke-width': 1.8 }, gNote);
+          mk('line', { x1: cx - 13, x2: cx + 13, y1: ly, y2: ly, stroke: '#7b8494', 'stroke-width': 1.7 }, gNote);
         }
       }
 
-      // Nota başı (Büyük ve okunaklı)
+      // Nota başı
       if (isHollow) {
-        mk('ellipse', { cx, cy: y, rx: 8.6, ry: 6.3, fill: '#121316', stroke: col, 'stroke-width': 2.8, transform: `rotate(-22 ${cx} ${y})` }, gNote);
+        mk('ellipse', { cx, cy: y, rx: 8.2, ry: 5.9, fill: '#121316', stroke: col, 'stroke-width': 2.6, transform: `rotate(-22 ${cx} ${y})` }, gNote);
       } else {
-        mk('ellipse', { cx, cy: y, rx: 8.5, ry: 6.4, fill: col, transform: `rotate(-20 ${cx} ${y})` }, gNote);
+        mk('ellipse', { cx, cy: y, rx: 8.1, ry: 6.0, fill: col, transform: `rotate(-20 ${cx} ${y})` }, gNote);
       }
 
-      // Sap ve Sekizlik/Onaltılık Çengelleri
+      // Sap ve Çengeller
       const up = y > yBottom - 2 * lineGap;
       if (hasStem) {
-        const sx = up ? cx + 7.6 : cx - 7.6;
+        const sx = up ? cx + 7.2 : cx - 7.2;
         const sy1 = up ? y - 1 : y + 1;
-        const sy2 = up ? y - 39 : y + 39;
-        mk('line', { x1: sx, x2: sx, y1: sy1, y2: sy2, stroke: col, 'stroke-width': 2.4, 'stroke-linecap': 'round' }, gNote);
+        const sy2 = up ? y - 34 : y + 34;
+        mk('line', { x1: sx, x2: sx, y1: sy1, y2: sy2, stroke: col, 'stroke-width': 2.2, 'stroke-linecap': 'round' }, gNote);
 
         for (let fl = 0; fl < flags; fl++) {
-          const fy = up ? sy2 + fl * 8.5 : sy2 - fl * 8.5;
+          const fy = up ? sy2 + fl * 7.5 : sy2 - fl * 7.5;
           const dPath = up
-            ? `M ${sx} ${fy} C ${sx + 10} ${fy + 5}, ${sx + 11} ${fy + 13}, ${sx + 3} ${fy + 19}`
-            : `M ${sx} ${fy} C ${sx + 10} ${fy - 5}, ${sx + 11} ${fy - 13}, ${sx + 3} ${fy - 19}`;
-          mk('path', { d: dPath, fill: 'none', stroke: col, 'stroke-width': 2.4, 'stroke-linecap': 'round' }, gNote);
+            ? `M ${sx} ${fy} C ${sx + 9} ${fy + 4}, ${sx + 10} ${fy + 11}, ${sx + 3} ${fy + 16}`
+            : `M ${sx} ${fy} C ${sx + 9} ${fy - 4}, ${sx + 10} ${fy - 11}, ${sx + 3} ${fy - 16}`;
+          mk('path', { d: dPath, fill: 'none', stroke: col, 'stroke-width': 2.2, 'stroke-linecap': 'round' }, gNote);
         }
       }
 
       if (isDotted) {
         const onLine = Math.abs(Math.round((yBottom - y) / lineGap) * lineGap - (yBottom - y)) < 1;
-        const dotY = onLine ? y - 4.5 : y;
-        mk('circle', { cx: cx + 15, cy: dotY, r: 3, fill: col }, gNote);
+        const dotY = onLine ? y - 4 : y;
+        mk('circle', { cx: cx + 14, cy: dotY, r: 2.8, fill: col }, gNote);
       }
 
       if (SHARP_PC(pc)) {
-        const t = mk('text', { x: cx - 23, y: y + 6, 'font-size': 19, 'font-weight': 'bold', fill: col }, gNote);
+        const t = mk('text', { x: cx - 21, y: y + 5, 'font-size': 17.5, 'font-weight': 'bold', fill: col }, gNote);
         t.textContent = '♯';
       }
 
       if (item.showName || item.state === 'hit') {
-        const lbl = mk('text', { x: cx, y: yBottom + 36, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 12.8, 'font-weight': '800', fill: col, 'text-anchor': 'middle' }, gNote);
+        const lbl = mk('text', { x: cx, y: yBottom + 27, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 11.8, 'font-weight': '800', fill: col, 'text-anchor': 'middle' }, gNote);
         lbl.textContent = `${nameOf(pc)} (${NAMES_EN[pc]})`;
         if (item.b !== undefined) {
-          const dl = mk('text', { x: cx, y: yBottom + 50, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 10, 'font-weight': '700', fill: '#d4c4b0', 'text-anchor': 'middle' }, gNote);
+          const dl = mk('text', { x: cx, y: yBottom + 39, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 9.4, 'font-weight': '700', fill: '#d4c4b0', 'text-anchor': 'middle' }, gNote);
           dl.textContent = durBadgeShort(b);
         }
       } else if (item.b !== undefined) {
-        const dl = mk('text', { x: cx, y: yBottom + 40, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 10, 'font-weight': '700', fill: '#9d8f7c', 'text-anchor': 'middle' }, gNote);
+        const dl = mk('text', { x: cx, y: yBottom + 30, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 9.5, 'font-weight': '700', fill: '#9d8f7c', 'text-anchor': 'middle' }, gNote);
         dl.textContent = durBadgeShort(b);
       }
 
       if (cfg.showStringFret && item.s !== undefined) {
         const strTxt = item.f !== undefined && (cfg.large || item.showName) ? `${item.s + 1}.tel · ${item.f}P` : `${item.s + 1}.tel`;
-        const strNum = mk('text', { x: cx, y: yOff + 22, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 10.5, 'font-weight': '800', fill: item.state === 'cur' ? '#ffc665' : '#b8a892', 'text-anchor': 'middle' }, gNote);
+        const strNum = mk('text', { x: cx, y: yOff + 17, 'font-family': 'Space Grotesk, sans-serif', 'font-size': 10, 'font-weight': '800', fill: item.state === 'cur' ? '#ffc665' : '#b8a892', 'text-anchor': 'middle' }, gNote);
         strNum.textContent = strTxt;
       }
 
       // Dokunma alanı
-      mk('rect', { x: cx - 22, y: yOff + 8, width: 44, height: rowH - 14, fill: 'transparent' }, gNote);
+      mk('rect', { x: cx - 22, y: yOff + 6, width: 44, height: rowH - 10, fill: 'transparent' }, gNote);
       gNote.onclick = e => {
         e.stopPropagation();
         if (typeof cfg.onNoteClick === 'function') cfg.onNoteClick(globalIdx, item);
@@ -969,6 +980,17 @@ function drawStaffNotes(notesList, targetSvg, opts) {
       };
     });
   }
+
+  // Aktif satırı adım adım takip edecek şekilde otomatik kaydır (aktif satır üstte, bir sonraki satır hemen altında görünür)
+  requestAnimationFrame(() => {
+    const scrollBox = svg.closest('.staffScrollBox');
+    if (scrollBox && numRows > 1) {
+      const svgH = svg.clientHeight || (numRows * 150);
+      const rowPx = svgH / numRows;
+      const targetTop = Math.max(0, activeRow * rowPx - 8);
+      scrollBox.scrollTo({ top: targetTop, behavior: 'smooth' });
+    }
+  });
 }
 
 let staffSub = localStorage.getItem('gn_staff_sub') || 'sheet';
@@ -1052,7 +1074,7 @@ function renderStaffBar() {
 
 async function newStaffSeq() {
   stopStaffTimer();
-  const len = staffSub === 'find' ? 1 : staffSub === 'sheet' ? staffSeqLen : 5;
+  const len = staffSub === 'find' ? 1 : Math.max(8, staffSeqLen);
   staffSeq = [];
   let prev = null;
   for (let i = 0; i < len; i++) {
@@ -1087,7 +1109,7 @@ function updateStaffView() {
 
   drawStaffNotes(list, $('staff'), {
     large: isSheetOnly,
-    multiLine: isSheetOnly && list.length > 4,
+    multiLine: list.length > 4,
     notesPerRow: 4,
     showStringFret: staffShowStrFret,
     onNoteClick: (idx, item) => {
@@ -1536,9 +1558,9 @@ let lastRms = 0, lastMicError = '';
 let micSens = localStorage.getItem('gn_mic_sens') || 'normal'; // 'sens' | 'normal' | 'strict'
 
 const SENS_CFG = {
-  sens: { rmsMin: 0.0022, onsetRatio: 1.45, centsChange: 65, stableTicks: 2 },
-  normal: { rmsMin: 0.0045, onsetRatio: 1.65, centsChange: 75, stableTicks: 3 },
-  strict: { rmsMin: 0.0110, onsetRatio: 1.95, centsChange: 90, stableTicks: 4 },
+  sens: { rmsMin: 0.0012, onsetRatio: 1.32, centsChange: 55, stableTicks: 2 },
+  normal: { rmsMin: 0.0020, onsetRatio: 1.45, centsChange: 65, stableTicks: 2 },
+  strict: { rmsMin: 0.0065, onsetRatio: 1.75, centsChange: 80, stableTicks: 3 },
 };
 
 function renderMicBar() {
@@ -1560,6 +1582,7 @@ function renderMicBar() {
 let ptState = {
   lockedFreq: -1,
   lockedPc: -1,
+  lockTicks: 0,
   minRmsAfterLock: 1,
   rearmedByOnset: false,
   quietCount: 0,
@@ -1574,6 +1597,7 @@ function resetPitchTracker(keepLock) {
     ptState.lockedFreq = -1;
     ptState.lockedPc = -1;
   }
+  ptState.lockTicks = 0;
   ptState.minRmsAfterLock = lastRms || 1;
   ptState.rearmedByOnset = false;
   ptState.quietCount = 0;
@@ -1584,6 +1608,7 @@ function resetPitchTracker(keepLock) {
 function lockCurrentPitch(freq, pc) {
   ptState.lockedFreq = freq;
   ptState.lockedPc = pc;
+  ptState.lockTicks = 0;
   ptState.minRmsAfterLock = lastRms || 1;
   ptState.rearmedByOnset = false;
   ptState.quietCount = 0;
@@ -1593,10 +1618,10 @@ function lockCurrentPitch(freq, pc) {
 
 function pollNoteEvent() {
   const cfg = SENS_CFG[micSens] || SENS_CFG.normal;
-  const f = detectPitch(false);
+  const f = detectPitch(true);
   const r = lastRms;
   const prevMin = Math.min(ptState.prevRms1, ptState.prevRms2, ptState.minRmsAfterLock);
-  const onset = r > cfg.rmsMin * 1.7 && r > prevMin * cfg.onsetRatio;
+  const onset = r > cfg.rmsMin * 1.4 && r > prevMin * cfg.onsetRatio;
   ptState.prevRms2 = ptState.prevRms1;
   ptState.prevRms1 = r;
 
@@ -1605,9 +1630,10 @@ function pollNoteEvent() {
 
   if (f < 0 || r < cfg.rmsMin) {
     ptState.quietCount++;
-    if (ptState.quietCount >= 3) {
+    if (ptState.quietCount >= 2) {
       ptState.lockedFreq = -1;
       ptState.lockedPc = -1;
+      ptState.lockTicks = 0;
       ptState.rearmedByOnset = true;
     }
     ptState.candCount = 0;
@@ -1619,6 +1645,10 @@ function pollNoteEvent() {
   const pc = ((m % 12) + 12) % 12;
 
   if (ptState.lockedFreq > 0) {
+    ptState.lockTicks++;
+    if (ptState.lockTicks >= 8) {
+      ptState.rearmedByOnset = true;
+    }
     const centsDiff = Math.abs(1200 * Math.log2(f / ptState.lockedFreq));
     const foldedDiff = Math.abs(centsDiff - 1200 * Math.round(centsDiff / 1200));
     const distinctPitch = foldedDiff >= cfg.centsChange && pc !== ptState.lockedPc;

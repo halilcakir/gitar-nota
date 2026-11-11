@@ -1,5 +1,5 @@
 // gn-v19: tüm uygulama dosyalarını kurulumda önbelleğe alır (iPhone/Android tam çevrimdışı PWA desteği)
-const C = 'gn-v22';
+const C = 'gn-v23';
 const ASSETS = [
   './',
   'index.html',
