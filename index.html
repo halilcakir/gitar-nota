@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#121316">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Gitar Nota">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="manifest" href="manifest.json">
+  <title>Nota &amp; Fretboard Atölyesi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div class="brand">
+      <img src="icon.svg" alt="Gitar Atölyesi" class="brandLogo">
+      <div class="brandText">
+        <h1>Nota &amp; Fretboard Atölyesi</h1>
+        <div class="brandSub">
+          <span id="modeSubLabel">KLAVYE &amp; ÖĞREN</span>
+          <span class="dotSep"></span>
+          <div id="score"></div>
+        </div>
+      </div>
+      <div class="hdrActions">
+        <button id="orientBtn" class="hdrBtn" title="Klavye Yönünü Değiştir (Dikey / Yatay)">🔄 Yön</button>
+        <button id="installBtn" class="hdrBtn accent" title="Uygulamayı Cihaza Kur">📲 Kur</button>
+      </div>
+    </div>
+    <div class="opts">
+      <select id="level" aria-label="Seviye Seç"></select>
+    </div>
+  </header>
+
+  <nav id="tabs">
+    <button data-group="workshop" data-mode="learn" class="active"><span class="ic">🎓</span><span class="lb">Atölye</span></button>
+    <button data-group="practice" data-mode="daily"><span class="ic">⚡</span><span class="lb">Pratik</span></button>
+    <button data-group="staff" data-mode="staff"><span class="ic">🎼</span><span class="lb">Porte</span></button>
+    <button data-group="song" data-mode="song"><span class="ic">🎵</span><span class="lb">Şarkı</span></button>
+    <button data-group="tuner" data-mode="tuner"><span class="ic">🎚</span><span class="lb">Akort</span></button>
+  </nav>
+
+  <main id="appMain">
+    <section id="info">
+      <div id="subTabs" class="subTabsBar" hidden></div>
+      <div class="activeStudyCard" id="studyCard">
+        <div class="ascLeft">
+          <span class="ascTag">AKTİF ÇALIŞMA</span>
+          <div id="levelDesc"></div>
+        </div>
+      </div>
+      <div id="custom" hidden></div>
+      <div id="tipsBar" hidden></div>
+      <div id="chordBar" hidden></div>
+      <div id="dailyBar" hidden></div>
+      <div class="promptBox" id="promptBox">
+        <div id="prompt"></div>
+        <div id="feedback"></div>
+      </div>
+      <div id="answers"></div>
+    </section>
+
+    <div id="staffBar" hidden></div>
+    <div id="staffWrap" hidden>
+      <div class="staffHeader">
+        <span class="shDot"></span>
+        <span id="staffTargetLabel">Sol Anahtarı (𝄞) · İnteraktif Porte</span>
+        <span class="shTime">4/4</span>
+      </div>
+      <svg id="staff" viewBox="0 -35 300 185"></svg>
+      <div id="staffDurCards" class="staffDurGrid"></div>
+      <div class="cap">Sol anahtarı (𝄞) · Klasik gitar notası · Üstte tel numarası, altta nota ve vuruş süresi</div>
+    </div>
+
+    <div id="songUI" hidden></div>
+    <div id="chordUI" hidden></div>
+    <div id="tuner" hidden></div>
+    <div id="micBar" hidden></div>
+
+    <div id="boardWrap">
+      <div class="boardHeader">
+        <span class="bhTitle">📏 KLAVYE MATRİSİ</span>
+        <span class="bhBadge">Do-Re-Mi</span>
+      </div>
+      <svg id="board" viewBox="0 0 1000 250"></svg>
+      <div id="notePopover" class="notePopover" hidden></div>
+    </div>
+
+    <div id="learnRules" hidden></div>
+    <div id="songBottom" hidden></div>
+    <div id="micStatus"></div>
+  </main>
+
+  <div id="platModal" class="platModal" hidden></div>
+
+  <script src="app.js"></script>
+  <script src="songs.js"></script>
+</body>
+
+</html>

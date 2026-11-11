@@ -1,0 +1,2337 @@
+:root {
+  --surface: #121316;
+  --surface-low: #1b1b1f;
+  --surface-container: #1f1f23;
+  --surface-high: #292a2d;
+  --surface-highest: #343538;
+  --on-surface: #e3e2e6;
+  --on-surface-var: #d4c4b0;
+  --outline: #9d8f7c;
+  --outline-var: #504535;
+  --primary: #ffc665;
+  --primary-container: #e5a93c;
+  --on-primary: #432c00;
+  --secondary: #4edea3;
+  --secondary-container: #00a572;
+  --on-secondary: #003824;
+  --error: #ff9790;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background: var(--surface);
+  color: var(--on-surface);
+  touch-action: manipulation;
+  padding-bottom: calc(82px + env(safe-area-inset-bottom));
+}
+
+/* Header (Stitch Top Bar — Platform Duyarlı Safe Area) */
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+  background: rgba(18, 19, 22, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid #292a2d;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+html.plt-android.plt-standalone header {
+  padding-top: max(env(safe-area-inset-top), 30px);
+}
+
+html.plt-ios.plt-standalone header {
+  padding-top: max(env(safe-area-inset-top), 22px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brandLogo {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+h1 {
+  margin: 0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.brandSub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 1px;
+}
+
+#modeSubLabel {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dotSep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--outline-var);
+}
+
+.opts {
+  display: flex;
+  width: 100%;
+}
+
+select {
+  flex: 1;
+  padding: 7px 11px;
+  border-radius: 10px;
+  border: 1px solid #38393c;
+  background: var(--surface-high);
+  color: var(--primary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+  outline: none;
+}
+
+.badges {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.bdg {
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: var(--surface-high);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.bdg.fire {
+  background: rgba(229, 169, 60, 0.18);
+  color: var(--primary);
+}
+
+.bdg.timer {
+  background: rgba(255, 151, 144, 0.2);
+  color: var(--error);
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 5px;
+  padding: 7px 10px;
+  background: var(--surface-low);
+}
+
+nav button {
+  padding: 7px 10px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  background: var(--surface-container);
+  color: var(--on-surface-var);
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: transform 0.12s, background 0.15s, color 0.15s;
+}
+
+nav button:active {
+  transform: scale(0.95);
+}
+
+nav button.active {
+  background: rgba(255, 198, 101, 0.15);
+  color: var(--primary);
+  border-color: rgba(255, 198, 101, 0.35);
+  font-weight: 700;
+}
+
+nav .ic {
+  display: block;
+  font-size: 1.15rem;
+  line-height: 1.15;
+}
+
+nav .lb {
+  display: block;
+  font-size: 0.65rem;
+  margin-top: 2px;
+}
+
+/* Info & Active Study Card */
+#info {
+  margin: 8px 12px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.activeStudyCard {
+  background: var(--surface-container);
+  border: 1px solid #2c2d32;
+  border-radius: 14px;
+  padding: 9px 13px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.ascTag {
+  display: block;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+#levelDesc {
+  color: var(--on-surface-var);
+  font-size: 0.8rem;
+  line-height: 1.38;
+}
+
+.promptBox {
+  background: var(--surface-low);
+  border: 1px solid #27282d;
+  border-radius: 14px;
+  padding: 10px 13px;
+}
+
+#prompt {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+#feedback {
+  min-height: 1.25em;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-top: 3px;
+  color: var(--on-surface-var);
+}
+
+#feedback.ok {
+  color: var(--secondary);
+}
+
+#feedback.bad {
+  color: var(--error);
+}
+
+/* Pills & Sub-bars */
+#tipsBar,
+#dailyBar,
+#staffBar,
+#micBar {
+  margin: 2px 12px;
+}
+
+#tipsBar[hidden],
+#dailyBar[hidden],
+#staffBar[hidden],
+#micBar[hidden],
+#learnRules[hidden] {
+  display: none;
+}
+
+.tipRow,
+.stOpts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin: 3px 0;
+}
+
+.pill {
+  padding: 6px 12px;
+  border: 1px solid #38393c;
+  border-radius: 99px;
+  background: var(--surface-high);
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pill:active {
+  transform: scale(0.95);
+}
+
+.pill.on,
+.pill.accent,
+.stModes button.sel {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-color: var(--primary);
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(255, 198, 101, 0.25);
+}
+
+.stModes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 6px;
+  background: var(--surface-low);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.stModes.stModes4 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 600px) {
+  .stModes.stModes4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.stModes button {
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Akor Modu */
+#chordBar {
+  padding: 2px 12px;
+}
+
+#chordBar[hidden],
+#chordUI[hidden] {
+  display: none;
+}
+
+.chordPills {
+  display: flex;
+  overflow-x: auto;
+  gap: 6px;
+  padding: 4px 0 6px;
+}
+
+.chordPills .pill {
+  flex: 0 0 auto;
+  min-width: 50px;
+  text-align: center;
+  font-size: 0.84rem;
+}
+
+#chordUI {
+  padding: 4px 12px 8px;
+}
+
+.chordCard {
+  background: var(--surface-container);
+  border: 1px solid #2e3036;
+  border-radius: 14px;
+  padding: 11px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.chDesc {
+  font-size: 0.82rem;
+  color: var(--on-surface-var);
+  line-height: 1.4;
+}
+
+.chBtns {
+  display: flex;
+  gap: 8px;
+}
+
+.chBtns button {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.84rem;
+}
+
+/* Porte (Stitch Dark Staff Card) */
+#staffWrap {
+  margin: 6px 12px;
+  padding: 10px 12px;
+  background: var(--surface-high);
+  border: 1px solid #35373d;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+#staffWrap[hidden],
+#songStaffWrap[hidden] {
+  display: none;
+}
+
+.staffHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--secondary);
+}
+
+.shDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--secondary);
+  display: inline-block;
+  margin-right: 6px;
+  box-shadow: 0 0 8px var(--secondary);
+}
+
+#staffTargetLabel {
+  flex: 1;
+  text-align: left;
+}
+
+.shTime {
+  background: var(--surface-container);
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.74rem;
+}
+
+#staff,
+#songStaff {
+  width: 100%;
+  max-width: 780px;
+  height: auto;
+  min-height: 150px;
+  background: #0d0e11;
+  border-radius: 14px;
+  border: 1px solid #32353d;
+  display: block;
+  margin: 4px auto;
+}
+
+#staff.largeSheetSvg,
+#songStaff.largeSheetSvg,
+.sheetStandActive #staff,
+.sheetStandActive #songStaff {
+  max-width: 100%;
+  min-height: 185px;
+  border-color: rgba(255, 198, 101, 0.35);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+}
+
+#staffWrap.sheetStandActive,
+#songStaffWrap.sheetStandActive {
+  padding: 14px;
+  background: var(--surface-container);
+  border: 1px solid rgba(255, 198, 101, 0.35);
+  border-radius: 18px;
+}
+
+.sheetStandToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #2b2d33;
+}
+
+.sstTitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.sstActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.spViewBtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.scBtn.sheet {
+  background: rgba(255, 198, 101, 0.14);
+  color: var(--primary);
+  border: 1px solid rgba(255, 198, 101, 0.38);
+}
+
+.sheetAnsBar {
+  width: 100%;
+  background: var(--surface-container);
+  border: 1px solid #2e3036;
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sabLbl {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--on-surface-var);
+}
+
+.sabBtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.staffDurGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(56px, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.sdc {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 3px;
+  border-radius: 8px;
+  background: var(--surface-container);
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+}
+
+.sdc span {
+  font-size: 0.62rem;
+  opacity: 0.8;
+  margin-top: 1px;
+}
+
+.sdc.cur {
+  background: rgba(255, 198, 101, 0.2);
+  color: var(--primary);
+  border: 1px solid rgba(255, 198, 101, 0.45);
+  box-shadow: 0 0 10px rgba(255, 198, 101, 0.2);
+}
+
+.sdc.hit {
+  background: rgba(78, 222, 163, 0.15);
+  color: var(--secondary);
+}
+
+.cap {
+  font-size: 0.7rem;
+  color: var(--outline);
+  margin-top: 5px;
+}
+
+/* Gitar Klavyesi (Stitch Dark Ebony Fretboard Card) */
+#boardWrap {
+  margin: 6px 12px;
+  padding: 10px;
+  background: var(--surface-container);
+  border: 1px solid #2b2d33;
+  border-radius: 16px;
+  overflow-x: auto;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.boardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  padding: 0 4px;
+}
+
+.bhTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--on-surface-var);
+  letter-spacing: 0.05em;
+}
+
+.bhBadge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: rgba(78, 222, 163, 0.15);
+  color: var(--secondary);
+}
+
+#board {
+  width: 100%;
+  min-width: 680px;
+  background: #0d0e11;
+  border-radius: 12px;
+  border: 1px solid #25262b;
+  user-select: none;
+}
+
+#board .pos {
+  cursor: pointer;
+}
+
+#board .pos circle {
+  fill: transparent;
+  stroke: none;
+  transition: r 0.12s;
+}
+
+#board .pos:hover circle {
+  fill: rgba(255, 198, 101, 0.15);
+}
+
+#board .pos.target circle {
+  fill: var(--primary);
+  stroke: #fff3db;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 6px rgba(255, 198, 101, 0.55));
+}
+
+#board .pos.pair circle {
+  fill: #203c32;
+  stroke: var(--secondary);
+  stroke-width: 2;
+}
+
+#board .pos.right circle {
+  fill: var(--secondary);
+  stroke: #e0fff3;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 8px rgba(78, 222, 163, 0.6));
+}
+
+#board .pos.wrong circle {
+  fill: #d94646;
+  stroke: #ffd6d6;
+  stroke-width: 2;
+}
+
+#board .pos text {
+  fill: var(--on-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+#board .pos.pair text {
+  fill: var(--secondary);
+}
+
+#board .pos.right text {
+  fill: var(--on-secondary);
+}
+
+#board .pos.wrong text {
+  fill: #fff;
+}
+
+/* 3 Altın Pratik Kural (Stitch Accordion Cards) */
+#learnRules {
+  margin: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rulesTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--on-surface);
+  padding: 0 2px;
+}
+
+.rulesTitle small {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  color: var(--outline);
+}
+
+.ruleAcc {
+  background: var(--surface-container);
+  border: 1px solid #2b2d33;
+  border-radius: 13px;
+  overflow: hidden;
+}
+
+.ruleAcc summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.86rem;
+}
+
+.ruleAcc summary::-webkit-details-marker {
+  display: none;
+}
+
+.rNum {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.rNum.n1 {
+  background: rgba(255, 198, 101, 0.2);
+  color: var(--primary);
+}
+
+.rNum.n2 {
+  background: rgba(78, 222, 163, 0.2);
+  color: var(--secondary);
+}
+
+.rNum.n3 {
+  background: rgba(255, 151, 144, 0.2);
+  color: var(--error);
+}
+
+.ruleAcc summary b {
+  flex: 1;
+}
+
+.rArr {
+  color: var(--outline);
+  transition: transform 0.2s;
+}
+
+.ruleAcc[open] .rArr {
+  transform: rotate(180deg);
+}
+
+.rBody {
+  padding: 8px 12px 12px;
+  background: var(--surface-low);
+  border-top: 1px solid #26272c;
+  font-size: 0.8rem;
+  color: var(--on-surface-var);
+  line-height: 1.45;
+}
+
+.rBody p {
+  margin: 0 0 8px;
+}
+
+.rDemo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+}
+
+.rDemo span {
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--surface-high);
+}
+
+.rDemo span.hi {
+  background: rgba(78, 222, 163, 0.18);
+  color: var(--secondary);
+  font-weight: 700;
+}
+
+/* Cevap Butonları */
+#answers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+#answers button {
+  min-width: 64px;
+  padding: 10px 13px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #9e6b14;
+}
+
+#answers button:active {
+  transform: translateY(1px);
+}
+
+#answers button small {
+  display: block;
+  font-size: 0.66rem;
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+#micStatus {
+  padding: 6px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--secondary);
+  text-align: center;
+}
+
+/* Hassas Gitar Akort Aleti (Stitch Arc Gauge UI) */
+#tuner {
+  padding: 4px 12px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#tuner[hidden] {
+  display: none;
+}
+
+.tunerTopBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tAlgoBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--surface-container);
+  color: var(--secondary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.tDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--secondary);
+  box-shadow: 0 0 6px var(--secondary);
+}
+
+.tMicBtn {
+  border: 1px solid rgba(78, 222, 163, 0.35);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tMicBtn.micOff {
+  border-color: rgba(255, 83, 91, 0.55);
+  background: rgba(255, 83, 91, 0.16);
+  color: #ffb4ab;
+}
+
+.tVuWrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  max-width: 150px;
+  background: var(--surface-container);
+  padding: 4px 9px;
+  border-radius: 99px;
+  border: 1px solid #2b2d33;
+}
+
+.tVuLbl {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--outline);
+}
+
+.tVuTrack {
+  flex: 1;
+  height: 6px;
+  background: #0d0e11;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.tVuFill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #4edea3 0%, #ffc665 75%, #ff535b 100%);
+  border-radius: 99px;
+  transition: width 0.06s linear;
+}
+
+.tMicDevRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-container);
+  border: 1px solid #2b2d33;
+  border-radius: 12px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  color: var(--on-surface-var);
+}
+
+.tMicDevRow[hidden] {
+  display: none;
+}
+
+.tMicSelect {
+  flex: 1;
+  background: var(--surface-low);
+  color: var(--on-surface);
+  border: 1px solid #35373e;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.75rem;
+}
+
+.tConcertBadge {
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--surface-container);
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.tStrCard {
+  background: var(--surface-container);
+  border: 1px solid #2b2d33;
+  border-radius: 16px;
+  padding: 10px 12px;
+}
+
+.tStrHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--on-surface-var);
+}
+
+.tAutoToggle {
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid #3c3e45;
+  background: var(--surface-high);
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.tAutoToggle.sel {
+  background: rgba(78, 222, 163, 0.18);
+  color: var(--secondary);
+  border-color: var(--secondary);
+}
+
+#tStr {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+#tStr button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 2px;
+  border: 1px solid #2e3036;
+  border-radius: 12px;
+  background: var(--surface-low);
+  color: var(--on-surface);
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+#tStr button .tsNum {
+  font-size: 0.65rem;
+  color: var(--outline);
+}
+
+#tStr button .tsEn {
+  font-size: 0.95rem;
+  color: var(--on-surface);
+}
+
+#tStr button .tsEn sub {
+  font-size: 0.62rem;
+}
+
+#tStr button .tsTr {
+  font-size: 0.65rem;
+  color: var(--on-surface-var);
+}
+
+#tStr button.sel,
+#tStr button.activeStr {
+  background: rgba(255, 198, 101, 0.16);
+  border-color: var(--primary);
+  box-shadow: 0 0 12px rgba(255, 198, 101, 0.25);
+}
+
+#tStr button.sel .tsEn,
+#tStr button.activeStr .tsEn {
+  color: var(--primary);
+}
+
+.tGaugeCard {
+  background: var(--surface-container);
+  border: 1px solid #2b2d33;
+  border-radius: 18px;
+  padding: 12px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tArcWrap {
+  width: 100%;
+  max-width: 300px;
+}
+
+.tArcSvg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+#needle {
+  transition: transform 0.12s ease-out;
+}
+
+#needle.idle {
+  opacity: 0.35;
+}
+
+.tCentsPill {
+  margin-top: 4px;
+  padding: 5px 14px;
+  border-radius: 99px;
+  background: var(--surface-high);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem;
+  color: var(--primary);
+}
+
+.tCentsPill small {
+  color: var(--on-surface-var);
+  font-size: 0.74rem;
+}
+
+.tDetailCard {
+  background: var(--surface-container);
+  border: 1px solid #2b2d33;
+  border-radius: 16px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tDetTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tBigNote {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--primary);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.tBigNote .bnTr {
+  font-size: 1.05rem;
+  color: var(--on-surface);
+  font-weight: 700;
+}
+
+.tBigNote .bnTr small {
+  font-size: 0.75rem;
+  color: var(--outline);
+}
+
+.tStatusBadge {
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--surface-high);
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.tStatusBadge.ok {
+  background: rgba(78, 222, 163, 0.18);
+  color: var(--secondary);
+}
+
+.tStatusBadge.warn {
+  background: rgba(255, 198, 101, 0.18);
+  color: var(--primary);
+}
+
+.tFreqRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface-low);
+  padding: 9px 12px;
+  border-radius: 12px;
+}
+
+.tFreqCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tFreqCol.right {
+  align-items: flex-end;
+}
+
+.tFreqCol small {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.62rem;
+  color: var(--outline);
+  font-weight: 700;
+}
+
+.tFreqCol b {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.96rem;
+  color: var(--on-surface);
+}
+
+.tFreqCol b.gold {
+  color: var(--primary);
+}
+
+.tFreqDiv {
+  width: 1px;
+  height: 26px;
+  background: var(--surface-highest);
+}
+
+.tHintBanner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--surface-high);
+  color: var(--on-surface-var);
+  font-size: 0.82rem;
+}
+
+.tHintBanner.ok {
+  background: rgba(78, 222, 163, 0.15);
+  color: var(--secondary);
+  border: 1px solid rgba(78, 222, 163, 0.35);
+}
+
+.tHintBanner.bad {
+  background: rgba(255, 198, 101, 0.14);
+  color: var(--primary);
+  border: 1px solid rgba(255, 198, 101, 0.32);
+}
+
+#tBtns {
+  display: flex;
+}
+
+.tRefBtn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 13px;
+  border: 1px solid #35373e;
+  background: var(--surface-high);
+  color: var(--on-surface);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Şarkılar ve Repertuar Modu (Stitch Repertoire UI) */
+#songUI {
+  padding: 4px 12px;
+}
+
+#songUI[hidden] {
+  display: none;
+}
+
+.songCatBar {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px 0 10px;
+}
+
+.songCatBar .pill {
+  flex: 0 0 auto;
+}
+
+.songList {
+  display: grid;
+  gap: 10px;
+}
+
+.songCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 1px solid #2d2f36;
+  border-radius: 15px;
+  background: var(--surface-container);
+  color: var(--on-surface);
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s, border-color 0.15s;
+}
+
+.songCard:active {
+  transform: scale(0.985);
+}
+
+.songCard.done {
+  border-color: rgba(78, 222, 163, 0.35);
+}
+
+.scMeta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.scSub {
+  font-size: 0.7rem;
+  color: var(--outline);
+  font-weight: 500;
+}
+
+.scTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.scTop b {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.02rem;
+  color: var(--on-surface);
+}
+
+.cat {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: var(--surface-high);
+  color: var(--primary);
+}
+
+.cat.tr {
+  background: rgba(78, 222, 163, 0.16);
+  color: var(--secondary);
+}
+
+.songCard .stars {
+  font-size: 0.92rem;
+  color: var(--primary);
+  letter-spacing: 1px;
+}
+
+.scProgTrack {
+  width: 100%;
+  height: 5px;
+  background: #0d0e11;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.scProgFill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 99px;
+}
+
+.scProgFill.full {
+  background: var(--secondary);
+}
+
+.scFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.songCard small {
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+}
+
+.scAction {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--surface-high);
+  color: var(--primary);
+}
+
+.songCard:disabled {
+  opacity: 0.45;
+}
+
+.makamInfoCard {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--surface-low);
+  border: 1px solid #2b2d33;
+  font-size: 0.78rem;
+  color: var(--on-surface-var);
+  line-height: 1.45;
+}
+
+.makamInfoCard b {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.makamInfoCard p {
+  margin: 0;
+}
+
+/* Aktif Şarkı Paneli */
+.spBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.spBar button,
+#spCtl button,
+#metro button {
+  padding: 8px 13px;
+  border: 1px solid #35373e;
+  border-radius: 11px;
+  background: var(--surface-high);
+  color: var(--on-surface);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.spStatsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.spStatBox {
+  background: var(--surface-low);
+  border: 1px solid #28292e;
+  border-radius: 10px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.spStatBox small {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.6rem;
+  color: var(--outline);
+  font-weight: 700;
+}
+
+.spStatBox b {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem;
+  color: var(--primary);
+  margin-top: 1px;
+}
+
+.spStatBox b.emerald {
+  color: var(--secondary);
+}
+
+#spModes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+#spModes button {
+  padding: 8px 4px;
+  border: 1px solid #2d2f36;
+  border-radius: 11px;
+  background: var(--surface-low);
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.74rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+#spModes button.sel {
+  background: var(--primary-container);
+  color: var(--on-primary);
+  border-color: var(--primary);
+  font-weight: 800;
+}
+
+.help {
+  font-size: 0.76rem;
+  color: var(--on-surface-var);
+  margin: 6px 0;
+}
+
+.spOpts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.spOpts label {
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--on-surface-var);
+}
+
+.durLegend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.66rem;
+  color: var(--on-surface-var);
+  margin: 4px 0;
+}
+
+.durLegend span {
+  background: var(--surface-low);
+  padding: 2px 7px;
+  border-radius: 6px;
+  border: 1px solid #2e3036;
+}
+
+#strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  max-height: 82px;
+  overflow-y: auto;
+  position: relative;
+  margin: 6px 0;
+  padding: 6px;
+  background: #0d0e11;
+  border: 1px solid #26282e;
+  border-radius: 11px;
+  align-items: center;
+}
+
+.chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 7px;
+  border-radius: 8px;
+  background: var(--surface-high);
+  border-bottom: 3px solid #504535;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.76rem;
+  line-height: 1.15;
+}
+
+.chip.d-eighth {
+  min-width: 34px;
+  border-bottom-color: #38bdf8;
+}
+
+.chip.d-qtr {
+  min-width: 48px;
+  border-bottom-color: #9d8f7c;
+}
+
+.chip.d-qtr-dot {
+  min-width: 60px;
+  border-bottom-color: #fabc4d;
+}
+
+.chip.d-half {
+  min-width: 74px;
+  border-bottom-color: #e5a93c;
+}
+
+.chip.d-half-dot,
+.chip.d-whole {
+  min-width: 88px;
+  border-bottom-color: #ff9790;
+}
+
+.chip small {
+  opacity: 0.82;
+  font-size: 0.58rem;
+  margin-top: 1px;
+  font-weight: 600;
+  color: var(--on-surface-var);
+}
+
+.chip.cur {
+  background: var(--primary);
+  color: var(--on-primary);
+  font-weight: 800;
+  border-bottom-color: #fff;
+  box-shadow: 0 0 10px rgba(255, 198, 101, 0.35);
+}
+
+.chip.cur small {
+  color: var(--on-primary);
+}
+
+.chip.hit {
+  background: rgba(78, 222, 163, 0.22);
+  color: var(--secondary);
+  border-bottom-color: var(--secondary);
+}
+
+.chip.miss {
+  background: rgba(255, 151, 144, 0.22);
+  color: var(--error);
+  border-bottom-color: var(--error);
+}
+
+#spMic {
+  min-height: 1.2em;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem;
+  color: var(--secondary);
+}
+
+#spCtl {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+#spCtl button {
+  flex: 1;
+  font-weight: 800;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+#spStart {
+  background: var(--primary) !important;
+  color: var(--on-primary) !important;
+  border-color: var(--primary) !important;
+}
+
+#metro {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: var(--surface-container);
+  border: 1px solid #2b2d33;
+  border-radius: 14px;
+}
+
+#metro button.on {
+  background: var(--secondary);
+  color: var(--on-secondary);
+  border-color: var(--secondary);
+  font-weight: 800;
+}
+
+#metro label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.84rem;
+}
+
+#metro input {
+  width: 110px;
+  accent-color: var(--primary);
+}
+
+#mDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--surface-highest);
+  display: inline-block;
+}
+
+#mDot.hi {
+  background: var(--secondary);
+  box-shadow: 0 0 8px var(--secondary);
+}
+
+#mDot.lo {
+  background: var(--primary);
+  box-shadow: 0 0 6px var(--primary);
+}
+
+#songBottom {
+  padding: 4px 12px;
+}
+
+#songBottom[hidden] {
+  display: none;
+}
+
+.spacer {
+  height: 88px;
+}
+
+/* Özel Seviye Filtre Paneli */
+#custom {
+  padding: 10px 12px;
+  background: var(--surface-container);
+  border: 1px solid #2e3036;
+  border-radius: 14px;
+}
+
+#custom[hidden] {
+  display: none;
+}
+
+.cRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 5px 0;
+  font-size: 0.82rem;
+}
+
+.cb {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: var(--surface-high);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+}
+
+.cb input {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--primary);
+}
+
+#cAll {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+}
+
+.progCard {
+  margin: 8px 12px;
+  padding: 12px 14px;
+  background: var(--surface-container);
+  border: 1px solid #2d2f36;
+  border-radius: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.86rem;
+}
+
+/* Onboarding Modal */
+#onb {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 14, 17, 0.84);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  padding: 20px;
+}
+
+#onb .card {
+  background: var(--surface-container);
+  border: 1px solid #38393c;
+  border-radius: 18px;
+  padding: 22px;
+  max-width: 350px;
+  text-align: center;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+#onb h2 {
+  font-family: 'Outfit', sans-serif;
+  margin: 0 0 10px;
+  color: var(--primary);
+}
+
+#onb p {
+  line-height: 1.5;
+  color: var(--on-surface-var);
+  font-size: 0.92rem;
+}
+
+#onb button {
+  margin-top: 14px;
+  padding: 11px 28px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  font-size: 0.96rem;
+}
+
+@media (max-width: 699px) {
+  #board {
+    min-width: 0;
+    max-width: 365px;
+    display: block;
+    margin: 0 auto;
+    background: #0d0e11;
+  }
+
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 45;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    background: rgba(24, 24, 28, 0.96);
+    backdrop-filter: blur(16px);
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    gap: 6px;
+    overflow: hidden;
+    border-top: 1px solid #2d2e34;
+    box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.52);
+  }
+
+  nav button {
+    min-width: 0;
+    width: 100%;
+    padding: 6px 2px;
+    background: transparent;
+    border-radius: 12px;
+  }
+
+  nav button.active {
+    background: rgba(255, 198, 101, 0.16);
+    color: var(--primary);
+    border-color: rgba(255, 198, 101, 0.38);
+  }
+
+  #answers {
+    padding: 6px 0 4px;
+    background: transparent;
+    justify-content: center;
+  }
+
+  #answers button {
+    flex: 1 0 21%;
+    min-height: 44px;
+  }
+}
+
+/* Klavye Üzerinde Açılan Nota Seçici (Note Popover) */
+#boardWrap {
+  position: relative;
+}
+
+.notePopover {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  z-index: 65;
+  background: rgba(24, 25, 29, 0.98);
+  backdrop-filter: blur(14px);
+  border: 1.5px solid var(--primary);
+  border-radius: 16px;
+  padding: 10px 12px 12px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85), 0 0 18px rgba(255, 198, 101, 0.28);
+}
+
+.npHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.npClose {
+  border: 1px solid #35373e;
+  background: var(--surface-high);
+  color: var(--on-surface);
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.npGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+}
+
+.npBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 198, 101, 0.35);
+  background: linear-gradient(145deg, #2b2c31, #1f2024);
+  color: var(--on-surface);
+  font-family: 'Space Grotesk', sans-serif;
+  cursor: pointer;
+}
+
+.npBtn b {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.npBtn small {
+  font-size: 0.65rem;
+  color: var(--on-surface-var);
+  margin-top: 1px;
+}
+
+.npBtn:active {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.npBtn:active b,
+.npBtn:active small {
+  color: var(--on-primary);
+}
+
+/* Şarkı Kartı Dinle & Çal Butonları */
+.scBtnGroup {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.scBtn {
+  padding: 6px 12px;
+  border-radius: 99px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.scBtn.listen {
+  background: rgba(78, 222, 163, 0.14);
+  color: var(--secondary);
+  border-color: rgba(78, 222, 163, 0.38);
+}
+
+.scBtn.play {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  color: var(--on-primary);
+  box-shadow: 0 2px 10px rgba(255, 198, 101, 0.28);
+}
+
+.scBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.songCard.locked {
+  opacity: 0.52;
+}
+
+/* Özel Filtre Açılır/Kapanır Kutusu & Leitner Satırı */
+.customDetails {
+  width: 100%;
+}
+
+.customDetails summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--on-surface-var);
+  padding: 2px 4px;
+}
+
+.customDetails summary::-webkit-details-marker {
+  display: none;
+}
+
+.customDetails summary b {
+  color: var(--primary);
+  margin-left: 4px;
+  flex: 1;
+}
+
+.customBody {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #2b2d33;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.leitnerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ltBox {
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 6px 8px;
+  border-radius: 9px;
+  background: var(--surface-low);
+  border: 1px solid #2b2d33;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.74rem;
+  color: var(--on-surface-var);
+}
+
+.ltBox.ok {
+  border-color: rgba(78, 222, 163, 0.4);
+  color: var(--secondary);
+}
+
+/* Gruplanmış Alt Sekme Seçici (Atölye & Pratik İçi Geçiş Çubuğu) */
+.subTabsBar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(68px, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border-radius: 14px;
+  background: var(--surface-low);
+  border: 1px solid #2b2d33;
+  overflow: hidden;
+}
+
+.subTabsBar[hidden] {
+  display: none !important;
+}
+
+.subTabBtn {
+  min-width: 0;
+  padding: 8px 4px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.subTabBtn.on {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  color: var(--on-primary);
+  font-weight: 800;
+  box-shadow: 0 2px 10px rgba(255, 198, 101, 0.25);
+}
+
+/* Üst Bar Aksiyon Butonları (Yön & Platform Kurulum) */
+.hdrActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.hdrBtn {
+  padding: 6px 10px;
+  border-radius: 99px;
+  border: 1px solid #35373e;
+  background: var(--surface-high);
+  color: var(--on-surface-var);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.hdrBtn.accent {
+  background: rgba(255, 198, 101, 0.14);
+  color: var(--primary);
+  border-color: rgba(255, 198, 101, 0.4);
+}
+
+/* Çapraz Platform Kurulum & Bilgi Penceresi */
+.platModal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(8, 9, 12, 0.78);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.platModal[hidden] {
+  display: none !important;
+}
+
+.pmCard {
+  width: 100%;
+  max-width: 560px;
+  background: var(--surface-container);
+  border: 1px solid #35373e;
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+}
+
+.pmHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.pmHead h3 {
+  margin: 4px 0 0;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  color: var(--on-surface);
+}
+
+.pmStatus {
+  font-size: 0.82rem;
+  color: var(--on-surface-var);
+  padding: 8px 12px;
+  background: var(--surface-low);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pmBadge {
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: rgba(78, 222, 163, 0.16);
+  color: var(--secondary);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.pmGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.pmBox {
+  background: var(--surface-low);
+  border: 1px solid #2b2d33;
+  border-radius: 14px;
+  padding: 12px;
+  font-size: 0.8rem;
+  color: var(--on-surface-var);
+}
+
+.pmBox.hi {
+  border-color: var(--primary);
+  background: rgba(255, 198, 101, 0.06);
+}
+
+.pmBox b {
+  color: var(--primary);
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.86rem;
+}
+
+.pmBox ol {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.5;
+}
+
+/* Tablet, iPad ve Masaüstü (Geniş Ekran) Çapraz Platform Stüdyo Düzeni */
+@media (min-width: 700px) {
+  body {
+    padding-bottom: 36px;
+  }
+
+  header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 28px;
+  }
+
+  header .brand {
+    flex: 1;
+  }
+
+  header .opts {
+    width: auto;
+    min-width: 260px;
+  }
+
+  nav#tabs {
+    max-width: 760px;
+    margin: 14px auto 4px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    padding: 6px;
+    background: var(--surface-container);
+    border: 1px solid #2d2e34;
+    border-radius: 16px;
+  }
+
+  nav#tabs button {
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+  }
+
+  main#appMain {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 4px 16px 32px;
+  }
+
+  .subTabsBar {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .subTabBtn {
+    font-size: 0.82rem;
+    padding: 9px 12px;
+  }
+
+  .songList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  #tuner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  #tuner[hidden] {
+    display: none !important;
+  }
+
+  .tunerTopBar,
+  .tStrCard {
+    grid-column: 1 / -1;
+  }
+
+  .tGaugeCard {
+    margin: 0;
+  }
+
+  .tDetailCard {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #tBtns {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1040px) {
+  .songList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  #learnRules {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    align-items: start;
+  }
+
+  #learnRules[hidden] {
+    display: none !important;
+  }
+
+  .rulesTitle {
+    grid-column: 1 / -1;
+  }
+}

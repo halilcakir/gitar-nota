@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Gitar Nota</string>
+    <string name="title_activity_main">Gitar Nota</string>
+    <string name="package_name">com.halil.gitarnota</string>
+    <string name="custom_url_scheme">com.halil.gitarnota</string>
+</resources>

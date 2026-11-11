@@ -1,0 +1,88 @@
+name: Web (PWA), Android APK & iOS IPA Derleme
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy-pwa:
+    name: 🌐 Web & iOS PWA (GitHub Pages)
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Web dosyalarını hazırla
+        run: |
+          mkdir -p dist
+          cp index.html style.css app.js songs.js manifest.json sw.js icon.svg icon-192.png icon-512.png dist/
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  build-android:
+    name: 🤖 Android APK Derle
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - name: Capacitor Senkronize Et ve APK Derle
+        run: |
+          npm install
+          mkdir -p www
+          cp index.html style.css app.js songs.js manifest.json sw.js icon.svg icon-192.png icon-512.png www/
+          npx cap sync android
+          cd android && chmod +x gradlew && ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GitarNota-Android-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+  build-ios:
+    name: 🍎 iOS Xcode IPA Derle (macOS)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Capacitor iOS Senkronize Et ve Xcode Archive Üret
+        run: |
+          npm install
+          mkdir -p www
+          cp index.html style.css app.js songs.js manifest.json sw.js icon.svg icon-192.png icon-512.png www/
+          npx cap sync ios
+          cd ios/App
+          xcodebuild -project App.xcodeproj \
+            -scheme App \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $RUNNER_TEMP/App.xcarchive \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            archive
+          mkdir -p $RUNNER_TEMP/Payload
+          cp -r $RUNNER_TEMP/App.xcarchive/Products/Applications/App.app $RUNNER_TEMP/Payload/
+          cd $RUNNER_TEMP && zip -r GitarNota-iOS-Unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GitarNota-iOS-Unsigned-IPA
+          path: ${{ runner.temp }}/GitarNota-iOS-Unsigned.ipa
+
